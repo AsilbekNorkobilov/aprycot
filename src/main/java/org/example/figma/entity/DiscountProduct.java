@@ -1,8 +1,7 @@
 package org.example.figma.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -10,6 +9,9 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "discount_product")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class DiscountProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

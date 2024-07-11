@@ -1,8 +1,7 @@
 package org.example.figma.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.example.figma.entity.enums.OrderStatus;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -13,6 +12,9 @@ import java.util.UUID;
 @Setter
 @Entity
 @Table(name = "orders")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
