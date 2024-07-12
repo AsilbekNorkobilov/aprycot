@@ -6,7 +6,7 @@ import org.example.figma.entity.OrderProduct;
 import org.example.figma.entity.User;
 import org.example.figma.entity.enums.OrderStatus;
 import org.example.figma.mappers.OrderProductMapper;
-import org.example.figma.model.dto.request.OrderProductDTO;
+import org.example.figma.model.dto.request.OrderProductReqDTO;
 import org.example.figma.repo.OrderProductRepository;
 import org.example.figma.repo.OrderRepository;
 import org.example.figma.service.OrderService;
@@ -31,13 +31,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<Order> save(List<OrderProductDTO> orderProductDTOList) {
+    public ResponseEntity<Order> save(List<OrderProductReqDTO> orderProductReqDTOList) {
         Order order=new Order();
         order.setUser(authenticatedUser);
         order.setOrderStatus(OrderStatus.OPEN);
         orderRepository.save(order);
-        for (OrderProductDTO orderProductDTO : orderProductDTOList) {
-            OrderProduct orderProduct = orderProductMapper.toEntity(orderProductDTO);
+        for (OrderProductReqDTO orderProductReqDTO : orderProductReqDTOList) {
+            OrderProduct orderProduct = orderProductMapper.toEntity(orderProductReqDTO);
             orderProduct.setOrder(order);
             orderProductRepository.save(orderProduct);
         }

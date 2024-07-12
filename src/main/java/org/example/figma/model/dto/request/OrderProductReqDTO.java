@@ -9,7 +9,7 @@ import java.util.UUID;
  * DTO for {@link org.example.figma.entity.OrderProduct}
  */
 @Value
-public class OrderProductDTO implements Serializable {
+public class OrderProductReqDTO implements Serializable {
     Integer amount;
     UUID productId;
 }
