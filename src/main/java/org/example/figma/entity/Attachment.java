@@ -1,14 +1,16 @@
 package org.example.figma.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "attachment")
 public class Attachment {
     @Id
