@@ -1,16 +1,20 @@
 package org.example.figma.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.example.figma.entity.Attachment;
 import org.example.figma.entity.User;
 import org.example.figma.mappers.UserMapper;
 import org.example.figma.model.dto.request.UserReqDTO;
 import org.example.figma.model.dto.response.UserResDto;
+import org.example.figma.repo.AttachmentRepository;
 import org.example.figma.repo.UserRepository;
 import org.example.figma.service.AttachmentService;
 import org.example.figma.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Base64;
 import java.util.List;
@@ -24,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private final AttachmentService attachmentService;
     private final User authenticatedUser;
     private final PasswordEncoder passwordEncoder;
+    private final AttachmentRepository attachmentRepository;
 
     @Override
     public ResponseEntity<List<UserResDto>> getMangers() {
@@ -61,5 +66,19 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity.status(200).body(user);
         }
         return ResponseEntity.status(500).body(null);
+    }
+
+    @SneakyThrows
+    @Override
+    public void savePhoto(MultipartFile photo) {
+        Optional<User> opt = userRepository.findById(authenticatedUser.getId());
+        if (opt.isPresent()){
+            User user = opt.get();
+            Attachment attachment=new Attachment();
+            attachment.setFullImage(photo.getBytes());
+            attachmentRepository.save(attachment);
+            user.setAttachment(attachment);
+            userRepository.save(user);
+        }
     }
 }
