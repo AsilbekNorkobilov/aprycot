@@ -4,7 +4,11 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -26,7 +30,6 @@ public class Attachment {
     private byte[] fullImage;
     private byte[] pressedImage;
 
-    // Метод для сжатия изображения
     public byte[] compressImage(MultipartFile photo) throws IOException {
         float quality=0.5f;
         // Чтение изображения из MultipartFile
@@ -36,34 +39,26 @@ public class Attachment {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         // Получение ImageWriter для JPEG
-        ImageIO.write(compressToJpeg(image, quality), "jpeg", byteArrayOutputStream);
+        ImageWriter jpgWriter = ImageIO.getImageWritersByFormatName("jpg").next();
+        ImageOutputStream ios = ImageIO.createImageOutputStream(byteArrayOutputStream);
+        jpgWriter.setOutput(ios);
 
-        // Преобразование выходного потока в массив байт
-        byte[] compressedImageBytes = byteArrayOutputStream.toByteArray();
+        // Настройка параметров сжатия
+        ImageWriteParam jpgWriteParam = jpgWriter.getDefaultWriteParam();
+        if (jpgWriteParam.canWriteCompressed()) {
+            jpgWriteParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            jpgWriteParam.setCompressionQuality(quality); // Установка качества сжатия
+        }
 
-        // Закрытие потока
-        byteArrayOutputStream.close();
-
-        return compressedImageBytes;
-    }
-
-    // Вспомогательный метод для сжатия изображения до формата JPEG с заданным качеством
-    private BufferedImage compressToJpeg(BufferedImage image, float quality) throws IOException {
-        // Создание выходного потока для сжатого изображения
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-        // Запись изображения в выходной поток с заданным качеством
-        ImageIO.write(image, "jpeg", byteArrayOutputStream);
-
-        // Чтение сжатого изображения из выходного потока
-        ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-        BufferedImage compressedImage = ImageIO.read(byteArrayInputStream);
+        // Запись изображения с заданными параметрами
+        jpgWriter.write(null, new IIOImage(image, null, null), jpgWriteParam);
 
         // Закрытие потоков
-        byteArrayOutputStream.close();
-        byteArrayInputStream.close();
+        ios.close();
+        jpgWriter.dispose();
 
-        return compressedImage;
+        // Преобразование выходного потока в массив байт
+        return byteArrayOutputStream.toByteArray();
     }
 
 }
