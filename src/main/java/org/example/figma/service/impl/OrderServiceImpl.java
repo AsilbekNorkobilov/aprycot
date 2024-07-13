@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.figma.config.AuditorAwareImpl;
 import org.example.figma.entity.Order;
 import org.example.figma.entity.OrderProduct;
-import org.example.figma.entity.User;
 import org.example.figma.entity.enums.OrderStatus;
 import org.example.figma.mappers.OrderProductMapper;
 import org.example.figma.model.dto.request.OrderProductReqDTO;
