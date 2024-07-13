@@ -3,6 +3,7 @@ package org.example.figma.config;
 import lombok.RequiredArgsConstructor;
 import org.example.figma.entity.User;
 import org.example.figma.repo.UserRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,5 +26,14 @@ public class AuditorAwareImpl implements AuditorAware<User> {
         }
         String email = authentication.getName();
         return Optional.ofNullable(userRepository.findByEmail(email));
+    }
+
+    @Bean
+    public User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            return (User) authentication.getPrincipal();
+        }
+        return null;
     }
 }

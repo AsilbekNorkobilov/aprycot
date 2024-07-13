@@ -76,6 +76,7 @@ public class UserServiceImpl implements UserService {
             User user = opt.get();
             Attachment attachment=new Attachment();
             attachment.setFullImage(photo.getBytes());
+            attachment.setPressedImage(attachment.compressImage(photo));
             attachmentRepository.save(attachment);
             user.setAttachment(attachment);
             userRepository.save(user);
