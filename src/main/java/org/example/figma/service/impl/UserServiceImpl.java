@@ -2,6 +2,7 @@ package org.example.figma.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.example.figma.config.AuditorAwareImpl;
 import org.example.figma.entity.Attachment;
 import org.example.figma.entity.User;
 import org.example.figma.mappers.UserMapper;
@@ -26,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final AttachmentService attachmentService;
-    private final User authenticatedUser;
+    private final AuditorAwareImpl auditorAware;
     private final PasswordEncoder passwordEncoder;
     private final AttachmentRepository attachmentRepository;
 
@@ -44,7 +45,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<User> changeUserDetails(UserReqDTO userReqDTO) {
-        Optional<User> opt = userRepository.findById(authenticatedUser.getId());
+        Optional<User> opt = userRepository.findById(auditorAware.getAuthenticatedUser().getId());
         if (opt.isPresent()){
             User user = opt.get();
             if (userReqDTO.getPhone()!=null){
@@ -71,7 +72,7 @@ public class UserServiceImpl implements UserService {
     @SneakyThrows
     @Override
     public void savePhoto(MultipartFile photo) {
-        Optional<User> opt = userRepository.findById(authenticatedUser.getId());
+        Optional<User> opt = userRepository.findById(auditorAware.getAuthenticatedUser().getId());
         if (opt.isPresent()){
             User user = opt.get();
             Attachment attachment=new Attachment();

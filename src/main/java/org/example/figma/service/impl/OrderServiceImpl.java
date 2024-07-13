@@ -1,6 +1,7 @@
 package org.example.figma.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.figma.config.AuditorAwareImpl;
 import org.example.figma.entity.Order;
 import org.example.figma.entity.OrderProduct;
 import org.example.figma.entity.User;
@@ -19,21 +20,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    private final User authenticatedUser;
+    private final AuditorAwareImpl auditorAware;
     private final OrderRepository orderRepository;
     private final OrderProductMapper orderProductMapper;
     private final OrderProductRepository orderProductRepository;
 
     @Override
     public ResponseEntity<List<Order>> getAllOrders() {
-        List<Order> userOrders = orderRepository.findAllByUserId(authenticatedUser.getId());
+        List<Order> userOrders = orderRepository.findAllByUserId(auditorAware.getAuthenticatedUser().getId());
         return ResponseEntity.status(200).body(userOrders);
     }
 
     @Override
     public ResponseEntity<Order> save(List<OrderProductReqDTO> orderProductReqDTOList) {
         Order order=new Order();
-        order.setUser(authenticatedUser);
+        order.setUser(auditorAware.getAuthenticatedUser());
         order.setOrderStatus(OrderStatus.OPEN);
         orderRepository.save(order);
         for (OrderProductReqDTO orderProductReqDTO : orderProductReqDTOList) {
