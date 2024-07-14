@@ -6,17 +6,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.example.figma.dto.LoginDto;
 import org.example.figma.dto.RegisterDto;
-import org.example.figma.entity.User;
 import org.example.figma.mappers.UserRegisterMapper;
 import org.example.figma.response.Response;
 import org.example.figma.security.JwtUtil;
-import org.example.figma.service.AuthService;
+import org.example.figma.service.impl.AuthService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,10 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final UserRegisterMapper userRegisterMapper;
     private final JwtUtil jwtUtil;
     private final AuthService authService;
-    private final AuthenticationManager authenticationManager;
 
     @Tag(name = "Register user")
     @Transactional
