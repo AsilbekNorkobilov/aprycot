@@ -6,4 +6,6 @@ import java.util.UUID;
 
 public interface AttachmentService {
     Attachment findById(UUID id);
+
+    Attachment savePhoto(byte[] bytes);
 }

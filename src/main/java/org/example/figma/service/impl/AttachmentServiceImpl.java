@@ -17,4 +17,13 @@ public class AttachmentServiceImpl implements AttachmentService {
     public Attachment findById(UUID id) {
         return attachmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Attachment not found"));
     }
+
+    @Override
+    public Attachment savePhoto(byte[] photo) {
+        Attachment attachment = Attachment.builder()
+                .fullImage(photo)
+                .build();
+        attachmentRepository.save(attachment);
+        return attachment;
+    }
 }

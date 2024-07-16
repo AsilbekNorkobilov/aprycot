@@ -1,7 +1,5 @@
 package org.example.figma.service;
 
-import org.example.figma.dto.AddressDTO;
-import org.example.figma.entity.Address;
 import org.example.figma.entity.User;
 import org.example.figma.model.dto.request.UserReqDTO;
 import org.example.figma.model.dto.response.UserResDto;
@@ -17,6 +15,11 @@ public interface UserService {
     ResponseEntity<User> changeUserDetails(UserReqDTO userReqDTO);
 
     void savePhoto(MultipartFile photo);
+
+    UUID saveManager(ManagerResDto managerResDto);
+
+    @SneakyThrows
+    String saveManagerPhoto(MangerUUIDPhotoDto manager) throws IOException;
 
     ResponseEntity<List<AddressDTO>> getAddresses();
 
