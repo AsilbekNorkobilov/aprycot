@@ -113,6 +113,7 @@ public class UserServiceImpl implements UserService {
         Attachment attachment = attachmentService.savePhoto(manager.getMultipartFile().getBytes());
         currentManager.setAttachment(attachment);
         userRepository.save(currentManager);
+        System.out.println("Saved Manager");
         return "Manager saved!";
     }
 }
