@@ -2,6 +2,7 @@ package org.example.figma.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Fetch;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -35,6 +36,9 @@ public class User implements UserDetails {
 
     @ManyToMany
     private List<Role> roles;
+
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    private List<Order> addressList;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

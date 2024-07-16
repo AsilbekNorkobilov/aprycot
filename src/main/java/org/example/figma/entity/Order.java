@@ -30,4 +30,7 @@ public class Order {
     @CreationTimestamp
     private LocalDateTime orderTime;
 
+    @ManyToOne
+    private Address address;
+
 }

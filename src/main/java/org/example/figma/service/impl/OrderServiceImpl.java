@@ -6,7 +6,9 @@ import org.example.figma.entity.Order;
 import org.example.figma.entity.OrderProduct;
 import org.example.figma.entity.enums.OrderStatus;
 import org.example.figma.mappers.OrderProductMapper;
+import org.example.figma.model.dto.request.AddressReqDTO;
 import org.example.figma.model.dto.request.OrderProductReqDTO;
+import org.example.figma.repo.AddressRepository;
 import org.example.figma.repo.OrderProductRepository;
 import org.example.figma.repo.OrderRepository;
 import org.example.figma.service.OrderService;
@@ -20,6 +22,7 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final AuditorAwareImpl auditorAware;
+    private final AddressRepository addressRepository;
     private final OrderRepository orderRepository;
     private final OrderProductMapper orderProductMapper;
     private final OrderProductRepository orderProductRepository;
@@ -31,9 +34,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<Order> save(List<OrderProductReqDTO> orderProductReqDTOList) {
+    public ResponseEntity<Order> save(List<OrderProductReqDTO> orderProductReqDTOList, AddressReqDTO addressReqDTO) {
         Order order=new Order();
         order.setUser(auditorAware.getAuthenticatedUser());
+        order.setAddress(addressRepository.findById(addressReqDTO.getId()).get());
         order.setOrderStatus(OrderStatus.OPEN);
         orderRepository.save(order);
         for (OrderProductReqDTO orderProductReqDTO : orderProductReqDTOList) {

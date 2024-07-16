@@ -1,7 +1,9 @@
 package org.example.figma.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.figma.dto.AddressDTO;
 import org.example.figma.entity.Order;
+import org.example.figma.model.dto.request.AddressReqDTO;
 import org.example.figma.model.dto.request.OrderProductReqDTO;
 import org.example.figma.service.OrderService;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +19,8 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping()
-    public ResponseEntity<Order> saveOrder(@RequestBody List<OrderProductReqDTO> orderProductReqDTOList){
-        return orderService.save(orderProductReqDTOList);
+    public ResponseEntity<Order> saveOrder(@RequestBody List<OrderProductReqDTO> orderProductReqDTOList, @RequestBody AddressReqDTO addressReqDTO){
+        return orderService.save(orderProductReqDTOList,addressReqDTO);
     }
 
     @GetMapping
