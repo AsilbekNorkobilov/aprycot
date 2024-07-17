@@ -16,4 +16,6 @@ public interface CategoryService {
     UUID saveCategory(String name);
 
     String saveCategoryPhoto(CategoryDto categoryDto) throws IOException;
+
+    String archiveCategory(UUID categoryId);
 }

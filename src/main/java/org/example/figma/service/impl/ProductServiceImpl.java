@@ -79,4 +79,16 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
         return "Product saved! ProductName: "+product.getName();
     }
+
+    @Override
+    public void archiveProductsByCategoryId(UUID categoryId) {
+        productRepository.archiveProducts(categoryId);
+
+    }
+
+    @Override
+    public String archiveProduct(UUID productId) {
+        productRepository.archiveProduct(productId);
+        return "Product is deleted!";
+    }
 }

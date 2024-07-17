@@ -48,12 +48,17 @@ public class AdminController {
     }
 
     @PostMapping("category")
-    public UUID getSavedCategoryId(@RequestParam String name){
-        return categoryService.saveCategory(name);
+    public UUID getSavedCategoryId(@RequestParam("categoryName") String categoryName){
+        return categoryService.saveCategory(categoryName);
     }
     @PostMapping("category/photo")
     public ResponseEntity<?> saveCategoryPhoto(@RequestBody CategoryDto categoryDto) throws IOException {
         return ResponseEntity.ok(categoryService.saveCategoryPhoto(categoryDto));
+    }
+    @PostMapping("category/delete")
+    public ResponseEntity<?>deleteCategory(@RequestParam("categoryId") UUID categoryId){
+        productService.archiveProductsByCategoryId(categoryId);
+        return ResponseEntity.ok(categoryService.archiveCategory(categoryId));
     }
 
     @PostMapping("product")
@@ -64,5 +69,12 @@ public class AdminController {
     public ResponseEntity<?> saveProductPhoto(@RequestBody ProductDto productDto) throws IOException {
         return ResponseEntity.ok(productService.saveProductPhoto(productDto));
     }
+
+    @PostMapping("product/delete")
+    public ResponseEntity<?>deleteProduct(@RequestParam("productId") UUID productId){
+        return ResponseEntity.ok(productService.archiveProduct(productId));
+    }
+
+
 
 }

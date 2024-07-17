@@ -22,4 +22,8 @@ public interface ProductService {
     UUID saveProductReturnId(ProductResDto productResDto);
 
     String saveProductPhoto(ProductDto productDto) throws IOException;
+
+    void archiveProductsByCategoryId(UUID categoryId);
+
+    String archiveProduct(UUID productId);
 }
