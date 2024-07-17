@@ -61,7 +61,7 @@ public class AdminController {
         return productService.saveProductReturnId(productResDto);
     }
     @PostMapping("product/photo")
-    public ResponseEntity<?> saveProductPhoto(@RequestBody ProductDto productDto){
+    public ResponseEntity<?> saveProductPhoto(@RequestBody ProductDto productDto) throws IOException {
         return ResponseEntity.ok(productService.saveProductPhoto(productDto));
     }
 
