@@ -9,7 +9,6 @@ import org.example.figma.model.dto.response.CategoryResDto;
 import org.example.figma.repo.CategoryRepository;
 import org.example.figma.service.AttachmentService;
 import org.example.figma.service.CategoryService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor

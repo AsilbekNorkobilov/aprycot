@@ -3,6 +3,7 @@ package org.example.figma.controller;
 import lombok.RequiredArgsConstructor;
 import org.example.figma.model.dto.forsave.CategoryDto;
 import org.example.figma.model.dto.forsave.MangerUUIDPhotoDto;
+import org.example.figma.model.dto.forsave.ProductDto;
 import org.example.figma.model.dto.response.CategoryResDto;
 import org.example.figma.model.dto.forsave.ManagerResDto;
 import org.example.figma.model.dto.response.ProductResDto;
@@ -53,6 +54,15 @@ public class AdminController {
     @PostMapping("category/photo")
     public ResponseEntity<?> saveCategoryPhoto(@RequestBody CategoryDto categoryDto) throws IOException {
         return ResponseEntity.ok(categoryService.saveCategoryPhoto(categoryDto));
+    }
+
+    @PostMapping("product")
+    public UUID getSavedProductId(@RequestBody ProductResDto productResDto){
+        return productService.saveProductReturnId(productResDto);
+    }
+    @PostMapping("product/photo")
+    public ResponseEntity<?> saveProductPhoto(@RequestBody ProductDto productDto){
+        return ResponseEntity.ok(productService.saveProductPhoto(productDto));
     }
 
 }
