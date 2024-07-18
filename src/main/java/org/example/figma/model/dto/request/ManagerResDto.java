@@ -1,4 +1,4 @@
-package org.example.figma.model.dto.forsave;
+package org.example.figma.model.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

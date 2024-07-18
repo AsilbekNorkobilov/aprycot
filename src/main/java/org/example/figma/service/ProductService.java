@@ -1,7 +1,7 @@
 package org.example.figma.service;
 
 import org.example.figma.entity.Product;
-import org.example.figma.model.dto.forsave.ProductDto;
+import org.example.figma.model.dto.request.ProductDto;
 import org.example.figma.model.dto.response.ProductResDto;
 import org.example.figma.model.dto.response.TrendingOrderDto;
 import org.springframework.http.ResponseEntity;

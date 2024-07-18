@@ -1,7 +1,7 @@
 package org.example.figma.service;
 
 import org.example.figma.entity.Category;
-import org.example.figma.model.dto.forsave.CategoryDto;
+import org.example.figma.model.dto.request.CategoryDto;
 import org.example.figma.model.dto.response.CategoryResDto;
 import org.springframework.http.ResponseEntity;
 

@@ -4,12 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.example.figma.entity.Attachment;
 import org.example.figma.entity.Category;
 import org.example.figma.mappers.CategoryMapper;
-import org.example.figma.model.dto.forsave.CategoryDto;
+import org.example.figma.model.dto.request.CategoryDto;
 import org.example.figma.model.dto.response.CategoryResDto;
 import org.example.figma.repo.CategoryRepository;
 import org.example.figma.service.AttachmentService;
 import org.example.figma.service.CategoryService;
-import org.example.figma.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 

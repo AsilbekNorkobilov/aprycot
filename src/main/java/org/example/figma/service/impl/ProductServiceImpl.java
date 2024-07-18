@@ -5,7 +5,7 @@ import org.example.figma.entity.Attachment;
 import org.example.figma.entity.Category;
 import org.example.figma.entity.Product;
 import org.example.figma.mappers.ProductMapper;
-import org.example.figma.model.dto.forsave.ProductDto;
+import org.example.figma.model.dto.request.ProductDto;
 import org.example.figma.model.dto.response.ProductResDto;
 import org.example.figma.model.dto.response.TrendingOrderDto;
 import org.example.figma.repo.CategoryRepository;

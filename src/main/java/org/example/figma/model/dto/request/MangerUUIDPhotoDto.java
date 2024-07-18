@@ -1,4 +1,4 @@
-package org.example.figma.model.dto.forsave;
+package org.example.figma.model.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDto {
+public class MangerUUIDPhotoDto {
     private UUID id;
     private MultipartFile multipartFile;
 }
