@@ -30,36 +30,6 @@ public class Attachment {
     private byte[] fullImage;
     private byte[] pressedImage;
 
-    public byte[] compressImage(MultipartFile photo) throws IOException {
-        float quality=0.5f;
-        // Чтение изображения из MultipartFile
-        BufferedImage image = ImageIO.read(photo.getInputStream());
-
-        // Создание выходного потока для сжатого изображения
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-        // Получение ImageWriter для JPEG
-        ImageWriter jpgWriter = ImageIO.getImageWritersByFormatName("jpg").next();
-        ImageOutputStream ios = ImageIO.createImageOutputStream(byteArrayOutputStream);
-        jpgWriter.setOutput(ios);
-
-        // Настройка параметров сжатия
-        ImageWriteParam jpgWriteParam = jpgWriter.getDefaultWriteParam();
-        if (jpgWriteParam.canWriteCompressed()) {
-            jpgWriteParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-            jpgWriteParam.setCompressionQuality(quality); // Установка качества сжатия
-        }
-
-        // Запись изображения с заданными параметрами
-        jpgWriter.write(null, new IIOImage(image, null, null), jpgWriteParam);
-
-        // Закрытие потоков
-        ios.close();
-        jpgWriter.dispose();
-
-        // Преобразование выходного потока в массив байт
-        return byteArrayOutputStream.toByteArray();
-    }
     public void compressImage() throws IOException {
         float quality=0.5f;
         ByteArrayInputStream inputStream = new ByteArrayInputStream(fullImage);

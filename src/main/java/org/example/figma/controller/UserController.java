@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("address")
-    private void saveAddress(@RequestBody AddressDTO addressDTO){
-        userService.saveAddress(addressDTO);
+    private ResponseEntity<Address> saveAddress(@RequestBody AddressDTO addressDTO){
+        return userService.saveAddress(addressDTO);
     }
 }

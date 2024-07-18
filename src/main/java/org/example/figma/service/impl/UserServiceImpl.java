@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
             User user = opt.get();
             Attachment attachment=new Attachment();
             attachment.setFullImage(photo.getBytes());
-            attachment.setPressedImage(attachment.compressImage(photo));
+            attachment.compressImage();
             attachmentRepository.save(attachment);
             user.setAttachment(attachment);
             userRepository.save(user);
@@ -130,9 +130,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void saveAddress(AddressDTO addressDTO) {
+    public ResponseEntity<Address> saveAddress(AddressDTO addressDTO) {
         Address entity = addressMapper.toEntity(addressDTO);
         entity.setUser(auditorAware.getAuthenticatedUser());
-        addressRepository.save(entity);
+        Address save = addressRepository.save(entity);
+        return ResponseEntity.status(200).body(save);
     }
 }

@@ -2,6 +2,7 @@ package org.example.figma.service;
 
 import lombok.SneakyThrows;
 import org.example.figma.dto.AddressDTO;
+import org.example.figma.entity.Address;
 import org.example.figma.entity.User;
 import org.example.figma.model.dto.forsave.ManagerResDto;
 import org.example.figma.model.dto.forsave.MangerUUIDPhotoDto;
@@ -29,5 +30,5 @@ public interface UserService {
 
     ResponseEntity<List<AddressDTO>> getAddresses();
 
-    void saveAddress(AddressDTO addressDTO);
+    ResponseEntity<Address> saveAddress(AddressDTO addressDTO);
 }
