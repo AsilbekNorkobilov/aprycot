@@ -9,7 +9,7 @@ import org.example.figma.model.dto.response.CategoryResDto;
 import org.example.figma.repo.CategoryRepository;
 import org.example.figma.service.AttachmentService;
 import org.example.figma.service.CategoryService;
-import org.springframework.http.HttpStatus;
+import org.example.figma.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -60,5 +59,13 @@ public class CategoryServiceImpl implements CategoryService {
         currentCategory.setAttachment(attachment);
         categoryRepository.save(currentCategory);
         return "Category saved! CategoryName: "+currentCategory.getName();
+    }
+
+    @Override
+    public String archiveCategory(UUID categoryId) {
+        Category category = categoryRepository.findById(categoryId).get();
+        category.setArchived(true);
+        categoryRepository.save(category);
+        return "Category is deleted! CategoryName: "+category.getName();
     }
 }

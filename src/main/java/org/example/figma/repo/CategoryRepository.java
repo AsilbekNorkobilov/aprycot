@@ -10,4 +10,7 @@ import java.util.UUID;
 public interface CategoryRepository extends JpaRepository<Category, UUID> {
     @Query("from Category c where c.isArchived=false")
     List<Category> findAllByArchivedFalse();
+
+
+    Category findByName(String categoryName);
 }
