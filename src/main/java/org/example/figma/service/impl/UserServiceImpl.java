@@ -11,9 +11,8 @@ import org.example.figma.entity.User;
 import org.example.figma.entity.enums.RoleName;
 import org.example.figma.mappers.AddressMapper;
 import org.example.figma.mappers.UserMapper;
-import org.example.figma.model.dto.request.MangerUUIDPhotoDto;
 import org.example.figma.model.dto.request.UserReqDTO;
-import org.example.figma.model.dto.request.ManagerResDto;
+import org.example.figma.model.dto.request.ManagerReqDto;
 import org.example.figma.model.dto.response.UserResDto;
 import org.example.figma.repo.AddressRepository;
 import org.example.figma.repo.AttachmentRepository;
@@ -26,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -95,28 +95,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UUID saveManager(ManagerResDto managerResDto) {
+    public String saveManager(ManagerReqDto managerReqDto, MultipartFile multipartFile) throws IOException {
         Role manager = roleRepo.findByRoleName(RoleName.ROLE_MANAGER.name());
+        Attachment attachment = attachmentService.savePhoto(multipartFile.getBytes());
         User newManager = User.builder()
-                .firstName(managerResDto.getFirstName())
-                .lastName(managerResDto.getLastName())
-                .phone(managerResDto.getPhone())
-                .email(managerResDto.getEmail())
-                .password(passwordEncoder.encode(managerResDto.getPassword()))
+                .firstName(managerReqDto.getFirstName())
+                .lastName(managerReqDto.getLastName())
+                .phone(managerReqDto.getPhone())
+                .email(managerReqDto.getEmail())
+                .password(passwordEncoder.encode(managerReqDto.getPassword()))
                 .roles(List.of(manager))
+                .attachment(attachment)
                 .build();
         User savedManager = userRepository.save(newManager);
-        return savedManager.getId();
-    }
-
-    @SneakyThrows
-    @Override
-    public String saveManagerPhoto(MangerUUIDPhotoDto manager){
-        User currentManager = userRepository.findById(manager.getId()).get();
-        Attachment attachment = attachmentService.savePhoto(manager.getMultipartFile().getBytes());
-        currentManager.setAttachment(attachment);
-        userRepository.save(currentManager);
-        return "Manager saved!";
+        return "Manager saved! "+savedManager.getFirstName();
     }
 
     @Override

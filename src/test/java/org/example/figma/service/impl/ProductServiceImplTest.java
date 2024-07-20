@@ -7,6 +7,7 @@ import org.example.figma.model.dto.response.CategoryResDto;
 import org.example.figma.model.dto.response.ProductResDto;
 import org.example.figma.model.dto.response.TrendingOrderDto;
 import org.example.figma.repo.AttachmentRepository;
+import org.example.figma.repo.CategoryRepository;
 import org.example.figma.repo.ProductRepository;
 import org.example.figma.service.AttachmentService;
 import org.junit.jupiter.api.Assertions;
@@ -28,6 +29,7 @@ class ProductServiceImplTest {
     private ProductMapper productMapper;
     private AttachmentRepository attachmentRepository;
     private AttachmentService attachmentService;
+    private CategoryRepository categoryRepository;
     private ProductServiceImpl productService;
 
     @BeforeEach
@@ -35,8 +37,9 @@ class ProductServiceImplTest {
         productRepository= Mockito.mock(ProductRepository.class);
         productMapper=Mockito.mock(ProductMapper.class);
         attachmentRepository=Mockito.mock(AttachmentRepository.class);
+        categoryRepository=Mockito.mock(CategoryRepository.class);
         attachmentService=new AttachmentServiceImpl(attachmentRepository);
-        productService=new ProductServiceImpl(productRepository,productMapper,attachmentService);
+        productService=new ProductServiceImpl(productRepository,productMapper,attachmentService,categoryRepository);
 
     }
 

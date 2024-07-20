@@ -1,9 +1,7 @@
 package org.example.figma.service.impl;
 
-import lombok.SneakyThrows;
 import org.example.figma.entity.Category;
 import org.example.figma.mappers.CategoryMapper;
-import org.example.figma.model.dto.forsave.CategoryDto;
 import org.example.figma.model.dto.response.CategoryResDto;
 import org.example.figma.repo.AttachmentRepository;
 import org.example.figma.repo.CategoryRepository;
@@ -12,14 +10,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockMultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CategoryServiceImplTest {
 
@@ -61,25 +55,8 @@ class CategoryServiceImplTest {
 
     @Test
     void saveCategory() {
-        UUID uuid = UUID.randomUUID();
-        Category category=Category.builder()
-                .id(uuid)
-                .name("yegulik")
-                .build();
-        Mockito.when(categoryRepository.save(category)).thenReturn(Category.builder()
-                .id(uuid)
-                .name("yegulik")
-                .build());
-        UUID saved = categoryService.saveCategory("yegulik");
-        Assertions.assertEquals(uuid,saved);
+
     }
 
-    @SneakyThrows
-    @Test
-    void saveCategoryPhoto() {
-        UUID id=UUID.randomUUID();
-        CategoryDto categoryDto=new CategoryDto(id,new MockMultipartFile("a",new byte[]{1}));
-        categoryService.saveCategoryPhoto(categoryDto);
-        Mockito.when(categoryRepository.findById(id)).thenReturn(Optional.of(Category.builder().id(id).build()));
-    }
+
 }

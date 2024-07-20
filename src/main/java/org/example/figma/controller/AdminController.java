@@ -1,18 +1,17 @@
 package org.example.figma.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.figma.model.dto.request.CategoryDto;
-import org.example.figma.model.dto.request.MangerUUIDPhotoDto;
-import org.example.figma.model.dto.request.ProductDto;
+import org.example.figma.model.dto.request.*;
 import org.example.figma.model.dto.response.CategoryResDto;
-import org.example.figma.model.dto.request.ManagerResDto;
 import org.example.figma.model.dto.response.ProductResDto;
 import org.example.figma.model.dto.response.UserResDto;
 import org.example.figma.service.CategoryService;
 import org.example.figma.service.ProductService;
 import org.example.figma.service.UserService;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,17 +36,18 @@ public class AdminController {
         return userService.getMangers();
     }
 
-    @PostMapping("addManager")
-    public UUID getSavedManagerId(@RequestBody ManagerResDto managerResDto){return userService.saveManager(managerResDto);}
+    @PostMapping(value = "addManager", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String getSavedManagerName(@RequestBody ManagerReqDto managerReqDto,@RequestBody MultipartFile multipartFile) throws IOException {
+        return userService.saveManager(managerReqDto,multipartFile);
+    }
 
-    @PostMapping("addManager/photo")
-    public ResponseEntity<?> savePhoto(@RequestBody MangerUUIDPhotoDto manager) throws IOException {return ResponseEntity.ok(userService.saveManagerPhoto(manager));}
+    @PostMapping(value = "editManager",)
 
-    @PostMapping("category")
-    public UUID getSavedCategoryId(@RequestParam("categoryName") String categoryName){return categoryService.saveCategory(categoryName);}
 
-    @PostMapping("category/photo")
-    public ResponseEntity<?> saveCategoryPhoto(@RequestBody CategoryDto categoryDto) throws IOException {return ResponseEntity.ok(categoryService.saveCategoryPhoto(categoryDto));}
+    @PostMapping(value = "category", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String getSavedCategoryName(@RequestParam("categoryName") String categoryName,@RequestBody MultipartFile multipartFile) throws IOException {
+        return categoryService.saveCategory(categoryName,multipartFile);
+    }
 
     @PostMapping("category/delete")
     public ResponseEntity<?>deleteCategory(@RequestParam("categoryId") UUID categoryId){
@@ -55,11 +55,11 @@ public class AdminController {
         return ResponseEntity.ok(categoryService.archiveCategory(categoryId));
     }
 
-    @PostMapping("product")
-    public UUID getSavedProductId(@RequestBody ProductResDto productResDto){return productService.saveProductReturnId(productResDto);}
+    @PostMapping(value = "product", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public String getSavedProductName(@RequestBody ProductReqDto productReqDto, @RequestBody MultipartFile multipartFile ) throws IOException {
+        return productService.saveProduct(productReqDto,multipartFile);
+    }
 
-    @PostMapping("product/photo")
-    public ResponseEntity<?> saveProductPhoto(@RequestBody ProductDto productDto) throws IOException {return ResponseEntity.ok(productService.saveProductPhoto(productDto));}
 
     @PostMapping("product/delete")
     public ResponseEntity<?>deleteProduct(@RequestParam("productId") UUID productId){return ResponseEntity.ok(productService.archiveProduct(productId));}

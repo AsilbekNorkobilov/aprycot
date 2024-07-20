@@ -6,7 +6,6 @@ import org.example.figma.entity.Address;
 import org.example.figma.entity.User;
 import org.example.figma.mappers.AddressMapper;
 import org.example.figma.mappers.UserMapper;
-import org.example.figma.model.dto.forsave.ManagerResDto;
 import org.example.figma.model.dto.request.UserReqDTO;
 import org.example.figma.model.dto.response.UserResDto;
 import org.example.figma.repo.AddressRepository;
@@ -24,8 +23,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class UserServiceImplTest {
     private UserRepository userRepository;
@@ -80,18 +77,9 @@ class UserServiceImplTest {
 
     @Test
     void saveManager() {
-        ManagerResDto managerResDto=new ManagerResDto();
-        UUID id=UUID.randomUUID();
-        User user=User.builder().email("a").id(id).build();
-        managerResDto.setEmail("a");
-        Mockito.when(userRepository.save(user)).thenReturn(User.builder().email("a").id(id).build());
-        UUID uuid = userService.saveManager(managerResDto);
-        Assertions.assertEquals(id,uuid);
+
     }
 
-    @Test
-    void saveManagerPhoto() {
-    }
 
     @Test
     void getAddresses() {

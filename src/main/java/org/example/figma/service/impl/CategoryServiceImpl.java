@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.example.figma.entity.Attachment;
 import org.example.figma.entity.Category;
 import org.example.figma.mappers.CategoryMapper;
-import org.example.figma.model.dto.request.CategoryDto;
 import org.example.figma.model.dto.response.CategoryResDto;
 import org.example.figma.repo.CategoryRepository;
 import org.example.figma.service.AttachmentService;
 import org.example.figma.service.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -42,22 +42,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public UUID saveCategory(String name) {
+    public String saveCategory(String name, MultipartFile multipartFile) throws IOException {
+        Attachment attachment = attachmentService.savePhoto(multipartFile.getBytes());
         Category category = Category.builder()
                 .name(name)
                 .isArchived(false)
+                .attachment(attachment)
                 .build();
         Category currnetCategory = categoryRepository.save(category);
-        return currnetCategory.getId();
-    }
-
-    @Override
-    public String saveCategoryPhoto(CategoryDto categoryDto) throws IOException {
-        Category currentCategory = categoryRepository.findById(categoryDto.getId()).get();
-        Attachment attachment = attachmentService.savePhoto(categoryDto.getMultipartFile().getBytes());
-        currentCategory.setAttachment(attachment);
-        categoryRepository.save(currentCategory);
-        return "Category saved! CategoryName: "+currentCategory.getName();
+        return "Category saved! CategoryName: "+ currnetCategory.getName();
     }
 
     @Override

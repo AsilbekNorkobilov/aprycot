@@ -6,6 +6,7 @@ import org.example.figma.entity.Category;
 import org.example.figma.entity.Product;
 import org.example.figma.mappers.ProductMapper;
 import org.example.figma.model.dto.request.ProductDto;
+import org.example.figma.model.dto.request.ProductReqDto;
 import org.example.figma.model.dto.response.ProductResDto;
 import org.example.figma.model.dto.response.TrendingOrderDto;
 import org.example.figma.repo.CategoryRepository;
@@ -14,6 +15,7 @@ import org.example.figma.service.AttachmentService;
 import org.example.figma.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Base64;
@@ -58,24 +60,17 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public UUID saveProductReturnId(ProductResDto productResDto){
-        Category category = categoryRepository.findByName(productResDto.getCategoryName());
+    public String saveProduct(ProductReqDto productReqDto, MultipartFile multipartFile) throws IOException {
+        Category category = categoryRepository.findByName(productReqDto.getCategoryName());
+        Attachment attachment = attachmentService.savePhoto(multipartFile.getBytes());
         Product product = Product.builder()
-                .name(productResDto.getName())
-                .price(productResDto.getPrice())
-                .calorie(productResDto.getCalorie())
+                .name(productReqDto.getName())
+                .price(productReqDto.getPrice())
+                .calorie(productReqDto.getCalorie())
                 .isArchived(false)
                 .category(category)
+                .attachment(attachment)
                 .build();
-        productRepository.save(product);
-        return product.getId();
-    }
-
-    @Override
-    public String saveProductPhoto(ProductDto productDto) throws IOException {
-        Product product = productRepository.findById(productDto.getId()).get();
-        Attachment attachment = attachmentService.savePhoto(productDto.getMultipartFile().getBytes());
-        product.setAttachment(attachment);
         productRepository.save(product);
         return "Product saved! ProductName: "+product.getName();
     }
@@ -83,7 +78,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void archiveProductsByCategoryId(UUID categoryId) {
         productRepository.archiveProducts(categoryId);
-
     }
 
     @Override

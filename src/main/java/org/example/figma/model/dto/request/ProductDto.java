@@ -12,5 +12,5 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ProductDto {
     private UUID id;
-    private MultipartFile multipartFile;
+//    private MultipartFile multipartFile;
 }

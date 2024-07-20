@@ -2,9 +2,11 @@ package org.example.figma.service;
 
 import org.example.figma.entity.Product;
 import org.example.figma.model.dto.request.ProductDto;
+import org.example.figma.model.dto.request.ProductReqDto;
 import org.example.figma.model.dto.response.ProductResDto;
 import org.example.figma.model.dto.response.TrendingOrderDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,9 +21,7 @@ public interface ProductService {
 
     ResponseEntity<List<TrendingOrderDto>> getTrendingProducts();
 
-    UUID saveProductReturnId(ProductResDto productResDto);
-
-    String saveProductPhoto(ProductDto productDto) throws IOException;
+    String saveProduct(ProductReqDto productReqDto, MultipartFile multipartFile) throws IOException;
 
     void archiveProductsByCategoryId(UUID categoryId);
 
