@@ -11,6 +11,7 @@ import org.example.figma.entity.User;
 import org.example.figma.entity.enums.RoleName;
 import org.example.figma.mappers.AddressMapper;
 import org.example.figma.mappers.UserMapper;
+import org.example.figma.model.dto.request.ManagerEditReqDto;
 import org.example.figma.model.dto.request.UserReqDTO;
 import org.example.figma.model.dto.request.ManagerReqDto;
 import org.example.figma.model.dto.response.UserResDto;
@@ -109,6 +110,23 @@ public class UserServiceImpl implements UserService {
                 .build();
         User savedManager = userRepository.save(newManager);
         return "Manager saved! "+savedManager.getFirstName();
+    }
+
+    @Override
+    public String editManager(ManagerEditReqDto managerEdit, MultipartFile multipartFile) throws IOException {
+        User currentManager = userRepository.findById(managerEdit.getId()).get();
+        UUID currentAttachmentId = currentManager.getAttachment().getId();
+        Attachment attachment = attachmentService.savePhoto(multipartFile.getBytes());
+        currentManager.setFirstName(managerEdit.getFirstName());
+        currentManager.setLastName(managerEdit.getLastName());
+        currentManager.setPhone(managerEdit.getPhone());
+        currentManager.setEmail(managerEdit.getEmail());
+        currentManager.setPassword(passwordEncoder.encode(managerEdit.getPassword()));
+        currentManager.setAttachment(attachment);
+        userRepository.save(currentManager);
+
+        attachmentService.deleteAttachment(currentAttachmentId);
+        return "Manager is edited "+currentManager.getFirstName();
     }
 
     @Override

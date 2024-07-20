@@ -37,17 +37,25 @@ public class AdminController {
     }
 
     @PostMapping(value = "addManager", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String getSavedManagerName(@RequestBody ManagerReqDto managerReqDto,@RequestBody MultipartFile multipartFile) throws IOException {
-        return userService.saveManager(managerReqDto,multipartFile);
+    public ResponseEntity<?> getSavedManagerName(@RequestBody ManagerReqDto managerReqDto,@RequestBody MultipartFile multipartFile) throws IOException {
+        return ResponseEntity.ok(userService.saveManager(managerReqDto,multipartFile));
     }
 
-    @PostMapping(value = "editManager",)
-
+    @PostMapping(value = "editManager",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> editManager(@RequestBody ManagerEditReqDto managerEdit,@RequestBody MultipartFile multipartFile) throws IOException {
+        return ResponseEntity.ok(userService.editManager(managerEdit,multipartFile));
+    }
 
     @PostMapping(value = "category", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String getSavedCategoryName(@RequestParam("categoryName") String categoryName,@RequestBody MultipartFile multipartFile) throws IOException {
-        return categoryService.saveCategory(categoryName,multipartFile);
+    public ResponseEntity<?> getSavedCategoryName(@RequestBody CategoryDto categoryDto,@RequestBody MultipartFile multipartFile) throws IOException {
+        return ResponseEntity.ok(categoryService.saveCategory(categoryDto,multipartFile));
     }
+
+    @PostMapping(value = "editCategory", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> editCategory(@RequestBody CategoryEditDto categoryEditDto, @RequestBody MultipartFile multipartFile) throws IOException {
+        return ResponseEntity.ok(categoryService.editCategory(categoryEditDto,multipartFile));
+    }
+
 
     @PostMapping("category/delete")
     public ResponseEntity<?>deleteCategory(@RequestParam("categoryId") UUID categoryId){
@@ -56,8 +64,13 @@ public class AdminController {
     }
 
     @PostMapping(value = "product", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String getSavedProductName(@RequestBody ProductReqDto productReqDto, @RequestBody MultipartFile multipartFile ) throws IOException {
-        return productService.saveProduct(productReqDto,multipartFile);
+    public ResponseEntity<?> getSavedProductName(@RequestBody ProductReqDto productReqDto, @RequestBody MultipartFile multipartFile ) throws IOException {
+        return ResponseEntity.ok(productService.saveProduct(productReqDto,multipartFile));
+    }
+
+    @PostMapping(value = "editProduct", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> editProduct(@RequestBody ProductEditReqDto productEditReqDto,@RequestBody MultipartFile multipartFile) throws IOException {
+        return ResponseEntity.ok(productService.editProduct(productEditReqDto,multipartFile));
     }
 
 

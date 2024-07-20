@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.example.figma.entity.Attachment;
 import org.example.figma.entity.Category;
 import org.example.figma.mappers.CategoryMapper;
+import org.example.figma.model.dto.request.CategoryDto;
+import org.example.figma.model.dto.request.CategoryEditDto;
 import org.example.figma.model.dto.response.CategoryResDto;
+import org.example.figma.repo.AttachmentRepository;
 import org.example.figma.repo.CategoryRepository;
 import org.example.figma.service.AttachmentService;
 import org.example.figma.service.CategoryService;
@@ -23,6 +26,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
     private final AttachmentService attachmentService;
+    private final AttachmentRepository attachmentRepository;
 
     @Override
     public ResponseEntity<List<CategoryResDto>> getCategories() {
@@ -42,15 +46,29 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public String saveCategory(String name, MultipartFile multipartFile) throws IOException {
+    public String saveCategory(CategoryDto categoryDto, MultipartFile multipartFile) throws IOException {
         Attachment attachment = attachmentService.savePhoto(multipartFile.getBytes());
         Category category = Category.builder()
-                .name(name)
+                .name(categoryDto.getName())
                 .isArchived(false)
                 .attachment(attachment)
                 .build();
         Category currnetCategory = categoryRepository.save(category);
         return "Category saved! CategoryName: "+ currnetCategory.getName();
+    }
+
+    @Override
+    public String editCategory(CategoryEditDto categoryEditDto, MultipartFile multipartFile) throws IOException {
+        Category currentCategory = categoryRepository.findById(categoryEditDto.getId()).get();
+
+        UUID currentCategoryAttachId = currentCategory.getAttachment().getId();
+
+        Attachment attachment = attachmentService.savePhoto(multipartFile.getBytes());
+        currentCategory.setName(categoryEditDto.getName());
+        currentCategory.setAttachment(attachment);
+        categoryRepository.save(currentCategory);
+        attachmentService.deleteAttachment(currentCategoryAttachId);
+        return "Category is edited! CategoryName: "+ currentCategory.getName();
     }
 
     @Override

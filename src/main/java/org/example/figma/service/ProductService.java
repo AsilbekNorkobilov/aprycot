@@ -1,7 +1,7 @@
 package org.example.figma.service;
 
 import org.example.figma.entity.Product;
-import org.example.figma.model.dto.request.ProductDto;
+import org.example.figma.model.dto.request.ProductEditReqDto;
 import org.example.figma.model.dto.request.ProductReqDto;
 import org.example.figma.model.dto.response.ProductResDto;
 import org.example.figma.model.dto.response.TrendingOrderDto;
@@ -26,4 +26,6 @@ public interface ProductService {
     void archiveProductsByCategoryId(UUID categoryId);
 
     String archiveProduct(UUID productId);
+
+    String editProduct(ProductEditReqDto productEditReqDto, MultipartFile multipartFile) throws IOException;
 }

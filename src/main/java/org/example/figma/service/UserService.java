@@ -3,6 +3,7 @@ package org.example.figma.service;
 import org.example.figma.dto.AddressDTO;
 import org.example.figma.entity.Address;
 import org.example.figma.entity.User;
+import org.example.figma.model.dto.request.ManagerEditReqDto;
 import org.example.figma.model.dto.request.ManagerReqDto;
 import org.example.figma.model.dto.request.UserReqDTO;
 import org.example.figma.model.dto.response.UserResDto;
@@ -25,4 +26,6 @@ public interface UserService {
     ResponseEntity<List<AddressDTO>> getAddresses();
 
     ResponseEntity<Address> saveAddress(AddressDTO addressDTO);
+
+    String editManager(ManagerEditReqDto managerEdit, MultipartFile multipartFile) throws IOException;
 }

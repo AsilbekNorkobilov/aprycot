@@ -26,4 +26,10 @@ public class AttachmentServiceImpl implements AttachmentService {
         attachmentRepository.save(attachment);
         return attachment;
     }
+
+    @Override
+    public void deleteAttachment(UUID id) {
+        Attachment attachment = attachmentRepository.findById(id).get();
+        attachmentRepository.delete(attachment);
+    }
 }

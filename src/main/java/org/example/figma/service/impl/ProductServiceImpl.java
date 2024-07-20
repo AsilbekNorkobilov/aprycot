@@ -5,7 +5,7 @@ import org.example.figma.entity.Attachment;
 import org.example.figma.entity.Category;
 import org.example.figma.entity.Product;
 import org.example.figma.mappers.ProductMapper;
-import org.example.figma.model.dto.request.ProductDto;
+import org.example.figma.model.dto.request.ProductEditReqDto;
 import org.example.figma.model.dto.request.ProductReqDto;
 import org.example.figma.model.dto.response.ProductResDto;
 import org.example.figma.model.dto.response.TrendingOrderDto;
@@ -73,6 +73,20 @@ public class ProductServiceImpl implements ProductService {
                 .build();
         productRepository.save(product);
         return "Product saved! ProductName: "+product.getName();
+    }
+
+    @Override
+    public String editProduct(ProductEditReqDto productEditReqDto, MultipartFile multipartFile) throws IOException {
+        Product currnetProduct = productRepository.findById(productEditReqDto.getId()).get();
+        UUID currentAttachId = currnetProduct.getAttachment().getId();
+        Attachment attachment = attachmentService.savePhoto(multipartFile.getBytes());
+        currnetProduct.setName(productEditReqDto.getName());
+        currnetProduct.setPrice(productEditReqDto.getPrice());
+        currnetProduct.setCalorie(productEditReqDto.getCalorie());
+        currnetProduct.setAttachment(attachment);
+        productRepository.save(currnetProduct);
+        attachmentService.deleteAttachment(currentAttachId);
+        return "Product edited! ProductName: "+currnetProduct.getName();
     }
 
     @Override
