@@ -5,9 +5,7 @@ import org.example.figma.model.dto.response.ProductResDto;
 import org.example.figma.model.dto.response.TrendingOrderDto;
 import org.example.figma.service.ProductService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -25,5 +23,11 @@ public class ProductController {
     @GetMapping("/trending")
     ResponseEntity<List<TrendingOrderDto>> getTrendingProducts() {
         return productService.getTrendingProducts();
+    }
+
+    @GetMapping("search")
+    public ResponseEntity<?> getProductsBySearch(@RequestParam String example){
+        List<ProductResDto> productResDtos=productService.search(example);
+        return ResponseEntity.ok(productResDtos);
     }
 }

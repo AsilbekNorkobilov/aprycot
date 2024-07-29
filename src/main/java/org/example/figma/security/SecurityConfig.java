@@ -32,13 +32,13 @@ public class SecurityConfig {
                         "/swagger-resources/*",
                         "/v3/api-docs/**")
                 .permitAll()
+                .requestMatchers("/api/category","/api/product/**").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
                 .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN","MANAGER")
                 .requestMatchers("/api/manager/**").hasAnyRole("MANAGER","ADMIN")
-                .anyRequest()
-                .authenticated()
+                .anyRequest().authenticated()
         );
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         http.sessionManagement(m-> m.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

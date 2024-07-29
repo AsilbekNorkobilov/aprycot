@@ -39,7 +39,7 @@ public class Attachment {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         // Get an ImageWriter for JPEG format
-        ImageWriter jpgWriter = ImageIO.getImageWritersByFormatName("png").next();
+        ImageWriter jpgWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
         ImageOutputStream ios = ImageIO.createImageOutputStream(byteArrayOutputStream);
         jpgWriter.setOutput(ios);
 

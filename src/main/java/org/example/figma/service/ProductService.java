@@ -28,4 +28,8 @@ public interface ProductService {
     String archiveProduct(UUID productId);
 
     String editProduct(ProductEditReqDto productEditReqDto, MultipartFile multipartFile) throws IOException;
+
+    ProductResDto getProductById(UUID id);
+
+    List<ProductResDto> search(String example);
 }

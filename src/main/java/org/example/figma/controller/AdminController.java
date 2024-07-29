@@ -85,4 +85,15 @@ public class AdminController {
         String message=orderService.changeStatus(id,orderStatus);
         return ResponseEntity.ok(message);
     }
+
+    @GetMapping("product/{id}")
+    public ResponseEntity<?> getProductById(@PathVariable UUID id){
+        ProductResDto productResDto=productService.getProductById(id);
+        return ResponseEntity.ok(productResDto);
+    }
+    @GetMapping("product/search")
+    public ResponseEntity<?> getProductsBySearch(@RequestParam String example){
+        List<ProductResDto> productResDtos=productService.search(example);
+        return ResponseEntity.ok(productResDtos);
+    }
 }

@@ -27,4 +27,6 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Transactional
     @Query(value = "UPDATE product SET is_archived = 'true' WHERE id = :productId", nativeQuery = true)
     void archiveProduct(UUID productId);
+
+    List<Product> findAllByNameContainingIgnoreCase(String name);
 }

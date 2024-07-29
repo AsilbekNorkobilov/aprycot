@@ -76,6 +76,31 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductResDto> search(String example) {
+        return productRepository.findAllByNameContainingIgnoreCase(example).stream().map(product -> {
+            ProductResDto dto = productMapper.toDto(product);
+            String base64Photo = Base64.getEncoder().encodeToString(attachmentService.findById(product.getAttachment().getId()).getPressedImage());
+            String category = product.getCategory().getName();
+            dto.setBase64Photo(base64Photo);
+            dto.setCategoryName(category);
+            return dto;
+        }).toList();
+    }
+
+    @Override
+    public ProductResDto getProductById(UUID id) {
+        Product product = productRepository.findById(id).orElseThrow(() -> {
+            throw new RuntimeException();
+        });
+        ProductResDto dto = productMapper.toDto(product);
+        String base64Photo = Base64.getEncoder().encodeToString(attachmentService.findById(product.getAttachment().getId()).getPressedImage());
+        String category = product.getCategory().getName();
+        dto.setBase64Photo(base64Photo);
+        dto.setCategoryName(category);
+        return dto;
+    }
+
+    @Override
     public String editProduct(ProductEditReqDto productEditReqDto, MultipartFile multipartFile) throws IOException {
         Product currnetProduct = productRepository.findById(productEditReqDto.getId()).get();
         UUID currentAttachId = currnetProduct.getAttachment().getId();
