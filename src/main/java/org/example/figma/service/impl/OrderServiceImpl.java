@@ -18,6 +18,7 @@ import org.example.figma.repo.OrderProductRepository;
 import org.example.figma.repo.OrderRepository;
 import org.example.figma.repo.ProductRepository;
 import org.example.figma.service.OrderService;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -68,6 +69,16 @@ public class OrderServiceImpl implements OrderService {
 
         }
         return ResponseEntity.status(200).body(orderResDtos);
+    }
+
+    @Override
+    public String changeStatus(UUID id, OrderStatus orderStatus) {
+        Order order = orderRepository.findById(id).orElseThrow(() -> {
+            throw new RuntimeException("Element not found");
+        });
+        order.setOrderStatus(orderStatus);
+        orderRepository.save(order);
+        return "Order status changed to "+orderStatus;
     }
 
     @Override

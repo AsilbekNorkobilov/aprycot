@@ -1,11 +1,13 @@
 package org.example.figma.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.figma.entity.enums.OrderStatus;
 import org.example.figma.model.dto.request.*;
 import org.example.figma.model.dto.response.CategoryResDto;
 import org.example.figma.model.dto.response.ProductResDto;
 import org.example.figma.model.dto.response.UserResDto;
 import org.example.figma.service.CategoryService;
+import org.example.figma.service.OrderService;
 import org.example.figma.service.ProductService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ import java.util.UUID;
 public class ManagerController {
     private final CategoryService categoryService;
     private final ProductService productService;
+    private final OrderService orderService;
 
     @GetMapping("category") ResponseEntity<List<CategoryResDto>> getCategories(){return categoryService.getCategories();}
 
@@ -60,4 +63,9 @@ public class ManagerController {
     @DeleteMapping("product/delete")
     public ResponseEntity<?>deleteProduct(@RequestParam("productId") UUID productId){return ResponseEntity.ok(productService.archiveProduct(productId));}
 
+    @PutMapping("order/{id}")
+    public ResponseEntity<?> changeOrderStatus(@PathVariable UUID id, @RequestBody OrderStatus orderStatus){
+        String message=orderService.changeStatus(id,orderStatus);
+        return ResponseEntity.ok(message);
+    }
 }
