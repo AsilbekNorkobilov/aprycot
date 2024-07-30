@@ -48,7 +48,15 @@ public class OrderServiceImpl implements OrderService {
             List<OrderProductDto> orderProductDtos=new ArrayList<>();
             AddressDto addressDto = addressResMapper.toDto(userOrder.getAddress());
             for (OrderProduct orderProduct : orderProducts) {
-                OrderProductDto dto = orderProductResMapper.toDto(orderProduct);
+                Product product = productRepository.findById(orderProduct.getProduct().getId()).orElseThrow(() -> {
+                    throw new RuntimeException();
+                });
+                OrderProductDto dto =OrderProductDto.builder()
+                        .productName(product.getName())
+                        .productPrice(product.getPrice())
+                        .amount(orderProduct.getAmount())
+                        .productCalorie(product.getCalorie())
+                        .build();
                 orderProductDtos.add(dto);
             }
             orderResDtos.add(OrderResDto.builder()
