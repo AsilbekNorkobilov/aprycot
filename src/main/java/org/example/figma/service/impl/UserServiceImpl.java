@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<User> changeUserDetails(UserReqDTO userReqDTO) {
+    public ResponseEntity<User> changeUserDetails(UserReqDTO userReqDTO, MultipartFile file) {
         Optional<User> opt = userRepository.findById(auditorAware.getAuthenticatedUser().getId());
         if (opt.isPresent()){
             User user = opt.get();
@@ -73,6 +73,14 @@ public class UserServiceImpl implements UserService {
             }
             if (userReqDTO.getPassword()!=null){
                 user.setPassword(passwordEncoder.encode(userReqDTO.getPassword()));
+            }if (file!=null){
+                try {
+                    Attachment attachment=attachmentService.savePhoto(file.getBytes());
+                    user.setAttachment(attachment);
+                    attachment.compressImage();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
             userRepository.save(user);
             return ResponseEntity.status(200).body(user);

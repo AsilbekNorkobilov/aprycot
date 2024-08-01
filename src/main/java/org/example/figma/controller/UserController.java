@@ -22,8 +22,8 @@ public class UserController {
     private final UserService userService;
 
     @PatchMapping
-    private ResponseEntity<User> changeUserCredentials(@RequestBody UserReqDTO userReqDTO){
-        return userService.changeUserDetails(userReqDTO);
+    private ResponseEntity<User> changeUserCredentials(@ModelAttribute UserReqDTO userReqDTO, @RequestParam(value = "attachmentFullImage") MultipartFile file){
+        return userService.changeUserDetails(userReqDTO,file);
     }
 
     @PostMapping(value = "photo",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
