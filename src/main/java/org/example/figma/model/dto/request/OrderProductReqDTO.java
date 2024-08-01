@@ -2,9 +2,9 @@ package org.example.figma.model.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.Value;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -13,7 +13,7 @@ import java.util.UUID;
 @Value
 @Data
 @AllArgsConstructor
-public class OrderProductReqDTO {
+public class OrderProductReqDTO implements Serializable {
     Integer amount;
     UUID productId;
 }

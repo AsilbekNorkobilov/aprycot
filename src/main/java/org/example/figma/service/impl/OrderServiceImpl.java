@@ -9,7 +9,6 @@ import org.example.figma.entity.enums.OrderStatus;
 import org.example.figma.mappers.AddressResMapper;
 import org.example.figma.mappers.OrderProductMapper;
 import org.example.figma.mappers.OrderProductResMapper;
-import org.example.figma.model.dto.request.AddressReqDTO;
 import org.example.figma.model.dto.request.OrderProductReqDTO;
 import org.example.figma.model.dto.response.AddressDto;
 import org.example.figma.model.dto.response.OrderProductDto;
@@ -64,10 +63,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<UUID> save(List<OrderProductReqDTO> orderProductReqDTOList, AddressReqDTO addressReqDTO) {
+    public ResponseEntity<UUID> save(List<OrderProductReqDTO> orderProductReqDTOList, UUID addressId) {
         Order order=new Order();
         order.setUser(auditorAware.getAuthenticatedUser());
-        order.setAddress(addressRepository.findById(addressReqDTO.getId()).get());
+        order.setAddress(addressRepository.findById(addressId).get());
         order.setOrderStatus(OrderStatus.OPEN);
         orderRepository.save(order);
         for (OrderProductReqDTO orderProductReqDTO : orderProductReqDTOList) {
