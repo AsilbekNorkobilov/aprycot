@@ -5,9 +5,14 @@ import org.example.figma.config.AuditorAwareImpl;
 import org.example.figma.entity.Order;
 import org.example.figma.entity.OrderProduct;
 import org.example.figma.entity.enums.OrderStatus;
+import org.example.figma.mappers.AddressResMapper;
 import org.example.figma.mappers.OrderProductMapper;
+import org.example.figma.mappers.OrderProductResMapper;
 import org.example.figma.model.dto.request.AddressReqDTO;
 import org.example.figma.model.dto.request.OrderProductReqDTO;
+import org.example.figma.model.dto.response.AddressDto;
+import org.example.figma.model.dto.response.OrderProductDto;
+import org.example.figma.model.dto.response.OrderResDto;
 import org.example.figma.repo.AddressRepository;
 import org.example.figma.repo.OrderProductRepository;
 import org.example.figma.repo.OrderRepository;
@@ -15,6 +20,7 @@ import org.example.figma.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,11 +32,31 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderProductMapper orderProductMapper;
     private final OrderProductRepository orderProductRepository;
+    private final OrderProductResMapper orderProductResMapper;
+    private final AddressResMapper addressResMapper;
 
     @Override
-    public ResponseEntity<List<Order>> getAllOrders() {
+    public ResponseEntity<List<OrderResDto>> getAllOrders() {
         List<Order> userOrders = orderRepository.findAllByUserId(auditorAware.getAuthenticatedUser().getId());
-        return ResponseEntity.status(200).body(userOrders);
+        List<OrderResDto> orderResDtos=new ArrayList<>();
+        for (Order userOrder : userOrders) {
+            List<OrderProduct> orderProducts = orderProductRepository.findAllByOrderId(userOrder.getId());
+            List<OrderProductDto> orderProductDtos=new ArrayList<>();
+            AddressDto addressDto = addressResMapper.toDto(userOrder.getAddress());
+            for (OrderProduct orderProduct : orderProducts) {
+                OrderProductDto dto = orderProductResMapper.toDto(orderProduct);
+                orderProductDtos.add(dto);
+            }
+            orderResDtos.add(OrderResDto.builder()
+                            .orderStatus(userOrder.getOrderStatus())
+                            .orderTime(userOrder.getOrderTime())
+                            .productDtoList(orderProductDtos)
+                            .addressDto(addressDto)
+                            .id(userOrder.getId())
+                    .build());
+
+        }
+        return ResponseEntity.status(200).body(orderResDtos);
     }
 
     @Override
