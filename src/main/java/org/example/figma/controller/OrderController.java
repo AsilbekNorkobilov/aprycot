@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/user/order")
@@ -20,7 +21,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping()
-    public ResponseEntity<Order> saveOrder(@RequestBody List<OrderProductReqDTO> orderProductReqDTOList, @RequestBody AddressReqDTO addressReqDTO){
+    public ResponseEntity<UUID> saveOrder(@RequestBody List<OrderProductReqDTO> orderProductReqDTOList, @RequestBody AddressReqDTO addressReqDTO){
         return orderService.save(orderProductReqDTOList,addressReqDTO);
     }
 

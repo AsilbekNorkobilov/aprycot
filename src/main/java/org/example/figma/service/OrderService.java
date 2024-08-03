@@ -7,11 +7,12 @@ import org.example.figma.model.dto.response.OrderResDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.UUID;
 
 
 public interface OrderService {
 
-    ResponseEntity<Order> save(List<OrderProductReqDTO> orderProductReqDTOList, AddressReqDTO addressReqDTO);
+    ResponseEntity<UUID> save(List<OrderProductReqDTO> orderProductReqDTOList, AddressReqDTO addressReqDTO);
 
     ResponseEntity<List<OrderResDto>> getAllOrders();
 }

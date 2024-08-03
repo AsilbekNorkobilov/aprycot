@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.figma.config.AuditorAwareImpl;
 import org.example.figma.entity.Order;
 import org.example.figma.entity.OrderProduct;
+import org.example.figma.entity.Product;
 import org.example.figma.entity.enums.OrderStatus;
 import org.example.figma.mappers.AddressResMapper;
 import org.example.figma.mappers.OrderProductMapper;
@@ -16,12 +17,14 @@ import org.example.figma.model.dto.response.OrderResDto;
 import org.example.figma.repo.AddressRepository;
 import org.example.figma.repo.OrderProductRepository;
 import org.example.figma.repo.OrderRepository;
+import org.example.figma.repo.ProductRepository;
 import org.example.figma.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderProductRepository orderProductRepository;
     private final OrderProductResMapper orderProductResMapper;
     private final AddressResMapper addressResMapper;
+    private final ProductRepository productRepository;
 
     @Override
     public ResponseEntity<List<OrderResDto>> getAllOrders() {
@@ -60,17 +64,23 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<Order> save(List<OrderProductReqDTO> orderProductReqDTOList, AddressReqDTO addressReqDTO) {
+    public ResponseEntity<UUID> save(List<OrderProductReqDTO> orderProductReqDTOList, AddressReqDTO addressReqDTO) {
         Order order=new Order();
         order.setUser(auditorAware.getAuthenticatedUser());
         order.setAddress(addressRepository.findById(addressReqDTO.getId()).get());
         order.setOrderStatus(OrderStatus.OPEN);
         orderRepository.save(order);
         for (OrderProductReqDTO orderProductReqDTO : orderProductReqDTOList) {
-            OrderProduct orderProduct = orderProductMapper.toEntity(orderProductReqDTO);
-            orderProduct.setOrder(order);
+            Product product = productRepository.findById(orderProductReqDTO.getProductId()).orElseThrow(() -> {
+                throw new RuntimeException();
+            });
+            OrderProduct orderProduct =OrderProduct.builder()
+                    .product(product)
+                    .order(order)
+                    .amount(orderProductReqDTO.getAmount())
+                    .build();
             orderProductRepository.save(orderProduct);
         }
-        return ResponseEntity.status(200).body(order);
+        return ResponseEntity.status(200).body(order.getId());
     }
 }
