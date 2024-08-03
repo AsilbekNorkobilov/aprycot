@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MailCodeSender {
     private final JavaMailSender javaMailSender;
-
     @Async
     public void sendMessage(Integer code, String email){
         SimpleMailMessage mailMessage=new SimpleMailMessage();

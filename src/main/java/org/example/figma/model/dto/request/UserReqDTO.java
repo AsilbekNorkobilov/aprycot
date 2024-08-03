@@ -15,5 +15,4 @@ public class UserReqDTO implements Serializable {
     String phone;
     String email;
     String password;
-    MultipartFile attachmentFullImage;
 }

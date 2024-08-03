@@ -17,7 +17,7 @@ public interface UserService {
 
     ResponseEntity<List<UserResDto>> getMangers();
 
-    ResponseEntity<User> changeUserDetails(UserReqDTO userReqDTO);
+    ResponseEntity<User> changeUserDetails(UserReqDTO userReqDTO, MultipartFile file);
 
     void savePhoto(MultipartFile photo);
 

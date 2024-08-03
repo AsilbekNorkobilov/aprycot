@@ -5,7 +5,6 @@ import org.example.figma.dto.AddressDTO;
 import org.example.figma.entity.Order;
 import org.example.figma.model.dto.request.AddressReqDTO;
 import org.example.figma.model.dto.request.OrderProductReqDTO;
-import org.example.figma.model.dto.response.OrderResDto;
 import org.example.figma.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -60,6 +60,4 @@ public class ManagerController {
     @DeleteMapping("product/delete")
     public ResponseEntity<?>deleteProduct(@RequestParam("productId") UUID productId){return ResponseEntity.ok(productService.archiveProduct(productId));}
 
-
-
 }
