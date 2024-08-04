@@ -7,6 +7,7 @@ import org.example.figma.entity.Address;
 import org.example.figma.entity.User;
 import org.example.figma.model.dto.request.UserReqDTO;
 import org.example.figma.service.UserService;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +26,7 @@ public class UserController {
         return userService.changeUserDetails(userReqDTO);
     }
 
-    @PostMapping("photo")
+    @PostMapping(value = "photo",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void savePhoto(@RequestParam("photo") MultipartFile photo){
         userService.savePhoto(photo);
     }
