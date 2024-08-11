@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.example.figma.entity.User;
 import org.example.figma.repo.UserRepository;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 

@@ -34,13 +34,13 @@ public class ManagerController {
         return ResponseEntity.ok(categoryService.saveCategory(categoryDto,multipartFile));
     }
 
-    @PostMapping(value = "editCategory", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "editCategory", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> editCategory(@ModelAttribute CategoryEditDto categoryEditDto, @RequestParam MultipartFile multipartFile) throws IOException {
         return ResponseEntity.ok(categoryService.editCategory(categoryEditDto,multipartFile));
     }
 
 
-    @PostMapping("category/delete")
+    @DeleteMapping("category/delete")
     public ResponseEntity<?>deleteCategory(@RequestParam("categoryId") UUID categoryId){
         productService.archiveProductsByCategoryId(categoryId);
         return ResponseEntity.ok(categoryService.archiveCategory(categoryId));
@@ -51,13 +51,13 @@ public class ManagerController {
         return ResponseEntity.ok(productService.saveProduct(productReqDto,multipartFile));
     }
 
-    @PostMapping(value = "editProduct", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "editProduct", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> editProduct(@ModelAttribute ProductEditReqDto productEditReqDto,@RequestParam MultipartFile multipartFile) throws IOException {
         return ResponseEntity.ok(productService.editProduct(productEditReqDto,multipartFile));
     }
 
 
-    @PostMapping("product/delete")
+    @DeleteMapping("product/delete")
     public ResponseEntity<?>deleteProduct(@RequestParam("productId") UUID productId){return ResponseEntity.ok(productService.archiveProduct(productId));}
 
 
