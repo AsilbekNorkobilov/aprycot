@@ -4,6 +4,9 @@ import lombok.*;
 
 import java.util.UUID;
 
+/**
+ *DTO for {@link org.example.figma.entity.User}
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

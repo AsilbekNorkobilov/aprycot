@@ -9,5 +9,5 @@ public interface AttachmentService {
 
     Attachment savePhoto(byte[] bytes);
 
-    void deleteAttachment(UUID currnetProduct);
+    void deleteAttachment(UUID currentProduct);
 }

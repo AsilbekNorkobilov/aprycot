@@ -29,14 +29,13 @@ public class ManagerController {
         return productService.getAllProducts();
     }
 
-
     @PostMapping(value = "category", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> getSavedCategoryName(@RequestBody CategoryDto categoryDto,@RequestBody MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<?> getSavedCategoryName(@ModelAttribute CategoryDto categoryDto,@RequestParam MultipartFile multipartFile) throws IOException {
         return ResponseEntity.ok(categoryService.saveCategory(categoryDto,multipartFile));
     }
 
     @PostMapping(value = "editCategory", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> editCategory(@RequestBody CategoryEditDto categoryEditDto, @RequestBody MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<?> editCategory(@ModelAttribute CategoryEditDto categoryEditDto, @RequestParam MultipartFile multipartFile) throws IOException {
         return ResponseEntity.ok(categoryService.editCategory(categoryEditDto,multipartFile));
     }
 
@@ -48,12 +47,12 @@ public class ManagerController {
     }
 
     @PostMapping(value = "product", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> getSavedProductName(@RequestBody ProductReqDto productReqDto, @RequestBody MultipartFile multipartFile ) throws IOException {
+    public ResponseEntity<?> getSavedProductName(@ModelAttribute ProductReqDto productReqDto, @RequestParam MultipartFile multipartFile ) throws IOException {
         return ResponseEntity.ok(productService.saveProduct(productReqDto,multipartFile));
     }
 
     @PostMapping(value = "editProduct", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> editProduct(@RequestBody ProductEditReqDto productEditReqDto,@RequestBody MultipartFile multipartFile) throws IOException {
+    public ResponseEntity<?> editProduct(@ModelAttribute ProductEditReqDto productEditReqDto,@RequestParam MultipartFile multipartFile) throws IOException {
         return ResponseEntity.ok(productService.editProduct(productEditReqDto,multipartFile));
     }
 
