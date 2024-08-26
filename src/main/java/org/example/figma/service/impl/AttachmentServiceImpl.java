@@ -19,7 +19,7 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
-    public Attachment savePhoto(byte[] photo) {
+    public Attachment savePhoto(byte[] photo){
         Attachment attachment = Attachment.builder()
                 .fullImage(photo)
                 .build();
