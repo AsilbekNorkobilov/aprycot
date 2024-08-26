@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
     public ResponseEntity<List<ProductResDto>> getAllProducts() {
         List<ProductResDto> productResDtoList = productRepository.findAllByArchivedFalse().stream().map(product -> {
             ProductResDto dto = productMapper.toDto(product);
-            String base64Photo = Base64.getEncoder().encodeToString(attachmentService.findById(product.getAttachment().getId()).getPressedImage());
+            String base64Photo = Base64.getEncoder().encodeToString(attachmentService.findById(product.getAttachment().getId()).getFullImage());
             String category = product.getCategory().getName();
             dto.setBase64Photo(base64Photo);
             dto.setCategoryName(category);
@@ -79,11 +79,14 @@ public class ProductServiceImpl implements ProductService {
     public String editProduct(ProductEditReqDto productEditReqDto, MultipartFile multipartFile) throws IOException {
         Product currnetProduct = productRepository.findById(productEditReqDto.getId()).get();
         UUID currentAttachId = currnetProduct.getAttachment().getId();
-        Attachment attachment = attachmentService.savePhoto(multipartFile.getBytes());
+
+        if (!multipartFile.isEmpty()){
+            Attachment attachment = attachmentService.savePhoto(multipartFile.getBytes());
+            currnetProduct.setAttachment(attachment);
+        }
         currnetProduct.setName(productEditReqDto.getName());
         currnetProduct.setPrice(productEditReqDto.getPrice());
         currnetProduct.setCalorie(productEditReqDto.getCalorie());
-        currnetProduct.setAttachment(attachment);
         productRepository.save(currnetProduct);
         attachmentService.deleteAttachment(currentAttachId);
         return "Product edited! ProductName: "+currnetProduct.getName();

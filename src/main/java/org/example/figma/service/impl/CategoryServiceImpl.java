@@ -33,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> categories = categoryRepository.findAllByArchivedFalse();
         List<CategoryResDto> categoryResDtos = categories.stream().map(category -> {
             CategoryResDto categoryDto = categoryMapper.toDto(category);
-            String base64Photo = Base64.getEncoder().encodeToString(attachmentService.findById(category.getAttachment().getId()).getPressedImage());
+            String base64Photo = Base64.getEncoder().encodeToString(attachmentService.findById(category.getAttachment().getId()).getFullImage());
             categoryDto.setBase64Photo(base64Photo);
             return categoryDto;
         }).toList();
@@ -63,9 +63,11 @@ public class CategoryServiceImpl implements CategoryService {
 
         UUID currentCategoryAttachId = currentCategory.getAttachment().getId();
 
-        Attachment attachment = attachmentService.savePhoto(multipartFile.getBytes());
+        if(!multipartFile.isEmpty()){
+            Attachment attachment = attachmentService.savePhoto(multipartFile.getBytes());
+            currentCategory.setAttachment(attachment);
+        }
         currentCategory.setName(categoryEditDto.getName());
-        currentCategory.setAttachment(attachment);
         categoryRepository.save(currentCategory);
         attachmentService.deleteAttachment(currentCategoryAttachId);
         return "Category is edited! CategoryName: "+ currentCategory.getName();

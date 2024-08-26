@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
         List<User> managers = userRepository.findAllManagers();
         List<UserResDto> managerDtos = managers.stream().map(manager ->{
             UserResDto userResDto = userMapper.toDto(manager);
-            String base64Photo = Base64.getEncoder().encodeToString(attachmentService.findById(manager.getAttachment().getId()).getPressedImage());
+            String base64Photo = Base64.getEncoder().encodeToString(attachmentService.findById(manager.getAttachment().getId()).getFullImage());
             userResDto.setBase64Photo(base64Photo);
             return userResDto;
         }).toList();
