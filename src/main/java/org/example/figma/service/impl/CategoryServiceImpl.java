@@ -33,7 +33,7 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> categories = categoryRepository.findAllByArchivedFalse();
         List<CategoryResDto> categoryResDtos = categories.stream().map(category -> {
             CategoryResDto categoryDto = categoryMapper.toDto(category);
-            String base64Photo = Base64.getEncoder().encodeToString(attachmentService.findById(category.getAttachment().getId()).getFullImage());
+            String base64Photo = Base64.getEncoder().encodeToString(attachmentService.findById(category.getAttachment().getId()).getPressedImage());
             categoryDto.setBase64Photo(base64Photo);
             return categoryDto;
         }).toList();

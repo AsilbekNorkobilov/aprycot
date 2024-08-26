@@ -6,6 +6,7 @@ import org.example.figma.repo.AttachmentRepository;
 import org.example.figma.service.AttachmentService;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @Service
@@ -19,10 +20,11 @@ public class AttachmentServiceImpl implements AttachmentService {
     }
 
     @Override
-    public Attachment savePhoto(byte[] photo){
+    public Attachment savePhoto(byte[] photo) throws IOException {
         Attachment attachment = Attachment.builder()
                 .fullImage(photo)
                 .build();
+        attachment.compressImage();
         attachmentRepository.save(attachment);
         return attachment;
     }

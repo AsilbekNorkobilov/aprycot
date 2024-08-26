@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
     public ResponseEntity<List<ProductResDto>> getAllProducts() {
         List<ProductResDto> productResDtoList = productRepository.findAllByArchivedFalse().stream().map(product -> {
             ProductResDto dto = productMapper.toDto(product);
-            String base64Photo = Base64.getEncoder().encodeToString(attachmentService.findById(product.getAttachment().getId()).getFullImage());
+            String base64Photo = Base64.getEncoder().encodeToString(attachmentService.findById(product.getAttachment().getId()).getPressedImage());
             String category = product.getCategory().getName();
             dto.setBase64Photo(base64Photo);
             dto.setCategoryName(category);
