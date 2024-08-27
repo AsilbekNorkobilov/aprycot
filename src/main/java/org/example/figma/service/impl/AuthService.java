@@ -76,7 +76,7 @@ public class AuthService {
 
     public HttpEntity<?> sendMail(String email) {
         User user = userRepository.findByEmail(email);
-        Integer code=new Random().nextInt();
+        Integer code=new Random().nextInt(10000,99999);
         user.setPassword(passwordEncoder.encode(code+""));
         userRepository.save(user);
         mailCodeSender.sendMessage(code,email);
