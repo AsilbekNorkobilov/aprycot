@@ -49,4 +49,14 @@ public class AuthController {
                 Response.builder().message("Token").data("Bearer " + jwtUtil.generateToken(email)).build()
         );
     }
+
+    @PostMapping("password/forgot")
+    public HttpEntity<?> forgotPassword(@RequestBody String email){
+        return authService.sendMail(email);
+    }
+
+    @PostMapping("password/change")
+    public HttpEntity<?> changePassword(@RequestBody String password){
+        return authService.changePassword(password);
+    }
 }
